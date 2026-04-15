@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JESFIO STUDIO - 基础T恤系列</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            color: #333;
+            background: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== Header ===== */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 40px;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #222;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .nav {
+            display: flex;
+            gap: 36px;
+            list-style: none;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #444;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover {
+            color: #000;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-right .search-text {
+            font-size: 14px;
+            color: #444;
+            cursor: pointer;
+        }
+
+        .header-icon {
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            color: #444;
+            transition: color 0.2s;
+        }
+
+        .header-icon:hover {
+            color: #000;
+        }
+
+        .header-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            background: #333;
+            color: #fff;
+            font-size: 10px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== Hero ===== */
+        .hero {
+            text-align: center;
+            padding: 60px 20px 50px;
+            background: #f8f8f6;
+        }
+
+        .hero-subtitle {
+            font-size: 14px;
+            color: #888;
+            letter-spacing: 2px;
+            margin-bottom: 14px;
+        }
+
+        .hero-title {
+            font-size: 32px;
+            font-weight: 600;
+            color: #222;
+            letter-spacing: 1px;
+        }
+
+        /* ===== Products Grid ===== */
+        .products-section {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 50px 40px 80px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 30px;
+        }
+
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .product-image-wrap {
+            position: relative;
+            width: 100%;
+            padding-top: 130%;
+            background: #f0efeb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .product-card:hover .product-image-wrap {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        .product-image-wrap img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.35s ease;
+        }
+
+        .product-image-wrap img.hidden {
+            opacity: 0;
+            position: absolute;
+        }
+
+        .product-image-wrap img.active {
+            opacity: 1;
+        }
+
+        .product-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 5px;
+        }
+
+        .product-desc {
+            font-size: 12.5px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+
+        .color-swatches {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .swatch {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border-color 0.2s, transform 0.15s;
+        }
+
+        .swatch:hover {
+            transform: scale(1.15);
+        }
+
+        .swatch.active {
+            border-color: #333;
+        }
+
+        .product-price {
+            font-size: 16px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 2px;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 1px;
+            margin-bottom: 12px;
+        }
+
+        .product-rating .star {
+            color: #222;
+            font-size: 11px;
+        }
+
+        .price-rating-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .card-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .btn-card-cart {
+            flex: 1;
+            padding: 9px 0;
+            border: 1.5px solid #222;
+            background: #222;
+            color: #fff;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-card-cart:hover {
+            background: #444;
+            border-color: #444;
+        }
+
+        .btn-card-buy {
+            flex: 1;
+            padding: 9px 0;
+            border: 1.5px solid #ccc;
+            background: #fff;
+            color: #333;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-card-buy:hover {
+            border-color: #222;
+            color: #222;
+        }
+
+        /* ===== Detail Page ===== */
+        .detail-overlay {
+            position: fixed;
+            inset: 0;
+            background: #fff;
+            z-index: 200;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .detail-overlay.open {
+            transform: translateX(0);
+        }
+
+        .detail-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 20px 40px;
+            font-size: 14px;
+            color: #666;
+            cursor: pointer;
+            border: none;
+            background: none;
+            transition: color 0.2s;
+        }
+
+        .detail-back:hover {
+            color: #222;
+        }
+
+        .detail-back svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .detail-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 40px 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .detail-gallery {
+            position: sticky;
+            top: 80px;
+        }
+
+        .detail-main-img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            border-radius: 12px;
+            background: #f0efeb;
+        }
+
+        .detail-thumbnails {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .detail-thumb {
+            width: 72px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            opacity: 0.6;
+            transition: all 0.2s;
+        }
+
+        .detail-thumb:hover {
+            opacity: 0.85;
+        }
+
+        .detail-thumb.active {
+            border-color: #333;
+            opacity: 1;
+        }
+
+        .detail-info {
+            padding-top: 10px;
+        }
+
+        .detail-breadcrumb {
+            font-size: 13px;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+
+        .detail-breadcrumb a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .detail-breadcrumb a:hover {
+            color: #555;
+        }
+
+        .detail-product-name {
+            font-size: 28px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 6px;
+        }
+
+        .detail-product-subtitle {
+            font-size: 15px;
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        .detail-price {
+            font-size: 26px;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 24px;
+        }
+
+        .detail-rating {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 28px;
+        }
+
+        .detail-rating .stars {
+            color: #222;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .detail-rating .rating-text {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .detail-section-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .detail-color-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .detail-color-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .detail-color-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2.5px solid transparent;
+            transition: border-color 0.2s, transform 0.15s;
+        }
+
+        .detail-color-item:hover .detail-color-circle {
+            transform: scale(1.1);
+        }
+
+        .detail-color-item.active .detail-color-circle {
+            border-color: #333;
+        }
+
+        .detail-color-name {
+            font-size: 11px;
+            color: #888;
+        }
+
+        .detail-size-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .detail-size-btn {
+            width: 48px;
+            height: 40px;
+            border: 1.5px solid #ddd;
+            background: #fff;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #444;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .detail-size-btn:hover {
+            border-color: #999;
+        }
+
+        .detail-size-btn.active {
+            border-color: #333;
+            background: #333;
+            color: #fff;
+        }
+
+        .detail-desc-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+
+        .detail-desc-text {
+            font-size: 14px;
+            line-height: 1.85;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .detail-add-cart {
+            width: 100%;
+            padding: 16px 0;
+            background: #222;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+            margin-bottom: 12px;
+        }
+
+        .detail-add-cart:hover {
+            background: #444;
+        }
+
+        .detail-buy-now {
+            width: 100%;
+            padding: 16px 0;
+            background: #fff;
+            color: #222;
+            border: 1.5px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        .detail-buy-now:hover {
+            border-color: #222;
+        }
+
+        .detail-features {
+            margin-top: 30px;
+            padding-top: 24px;
+            border-top: 1px solid #eee;
+        }
+
+        .detail-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+            font-size: 13px;
+            color: #777;
+        }
+
+        .detail-feature-item svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            color: #999;
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            border-top: 1px solid #eee;
+            padding: 40px 40px 36px;
+            display: flex;
+            justify-content: space-around;
+            background: #fafafa;
+            margin-top: 0;
+        }
+
+        .footer-col h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 14px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-col ul li a {
+            text-decoration: none;
+            color: #888;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        .footer-col ul li a:hover {
+            color: #333;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 1100px) {
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 14px 16px;
+            }
+
+            .nav {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 22px;
+            }
+
+            .products-section {
+                padding: 24px 16px;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .detail-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 0 20px 40px;
+            }
+
+            .detail-gallery {
+                position: static;
+            }
+
+            .detail-product-name {
+                font-size: 22px;
+            }
+
+            .footer {
+                flex-wrap: wrap;
+                gap: 24px;
+                padding: 24px 20px;
+            }
+
+            .footer-col {
+                min-width: 140px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .product-name {
+                font-size: 13px;
+            }
+
+            .product-desc {
+                font-size: 11px;
+            }
+        }
+
+        /* ===== Promo Popup ===== */
+        .popup-mask {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.35);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+        }
+
+        .popup-mask.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup-box {
+            background: #fff;
+            width: 400px;
+            max-width: 90vw;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            transform: scale(0.85) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.2);
+        }
+
+        .popup-mask.show .popup-box {
+            transform: scale(1) translateY(0);
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: rgba(0,0,0,0.05);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            transition: all 0.2s;
+            z-index: 2;
+        }
+
+        .popup-close:hover {
+            background: rgba(0,0,0,0.1);
+            color: #333;
+        }
+
+        .popup-close svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .popup-top {
+            background: #222;
+            padding: 40px 30px 36px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .popup-brand {
+            font-size: 14px;
+            letter-spacing: 3px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        .popup-offer {
+            font-size: 52px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            line-height: 1.1;
+            margin-bottom: 4px;
+        }
+
+        .popup-offer-unit {
+            font-size: 28px;
+        }
+
+        .popup-hint {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            margin-top: 10px;
+        }
+
+        .popup-bottom {
+            padding: 30px 30px 28px;
+            text-align: center;
+        }
+
+        .popup-input-wrap {
+            position: relative;
+            margin-bottom: 14px;
+        }
+
+        .popup-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+            color: #333;
+        }
+
+        .popup-input:focus {
+            border-color: #222;
+        }
+
+        .popup-input::placeholder {
+            color: #bbb;
+        }
+
+        .popup-submit {
+            width: 100%;
+            padding: 14px 0;
+            background: #222;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+            margin-bottom: 16px;
+        }
+
+        .popup-submit:hover {
+            background: #444;
+        }
+
+        .popup-dismiss {
+            font-size: 14px;
+            color: #555;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-weight: 500;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            text-decoration-thickness: 1.5px;
+            transition: color 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .popup-dismiss:hover {
+            color: #000;
+        }
+
+        /* ===== Toast ===== */
+        .toast {
+            position: fixed;
+            top: 80px;
+            right: 30px;
+            background: #333;
+            color: #fff;
+            padding: 14px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 999;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+    <div class="logo" onclick="closeDetail()">JESFIO STUDIO</div>
+    <ul class="nav">
+        <li><a href="#" onclick="closeDetail()">新品上市</a></li>
+        <li><a href="#">男士</a></li>
+        <li><a href="#">女士</a></li>
+        <li><a href="#">经典款式</a></li>
+        <li><a href="#">品牌日志</a></li>
+    </ul>
+    <div class="header-right">
+        <span class="search-text">搜索</span>
+        <div class="header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <div class="header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <div class="header-icon" id="cartIcon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span class="cart-badge" id="cartBadge">0</span>
+        </div>
+    </div>
+</header>
+
+<!-- Main Page -->
+<main id="mainPage">
+    <!-- Hero -->
+    <section class="hero">
+        <p class="hero-subtitle">基础T恤系列</p>
+        <h1 class="hero-title">为您挑选的完美基础款。寻找您的最爱。</h1>
+    </section>
+
+    <!-- Products -->
+    <section class="products-section">
+        <div class="products-grid" id="productsGrid"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-col">
+            <h4>关于我们</h4>
+            <ul>
+                <li><a href="#">品牌故事</a></li>
+                <li><a href="#">设计理念</a></li>
+                <li><a href="#">可持续发展</a></li>
+                <li><a href="#">加入我们</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>帮助中心</h4>
+            <ul>
+                <li><a href="#">常见问题</a></li>
+                <li><a href="#">尺码指南</a></li>
+                <li><a href="#">订单查询</a></li>
+                <li><a href="#">联系客服</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>配送政策</h4>
+            <ul>
+                <li><a href="#">配送方式</a></li>
+                <li><a href="#">退换货政策</a></li>
+                <li><a href="#">运费说明</a></li>
+                <li><a href="#">配送时间</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>社交媒体</h4>
+            <ul>
+                <li><a href="#">微信公众号</a></li>
+                <li><a href="#">微博</a></li>
+                <li><a href="#">小红书</a></li>
+                <li><a href="#">抖音</a></li>
+            </ul>
+        </div>
+    </footer>
+</main>
+
+<!-- Detail Page Overlay -->
+<div class="detail-overlay" id="detailOverlay">
+    <button class="detail-back" onclick="closeDetail()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        返回列表
+    </button>
+    <div class="detail-container">
+        <div class="detail-gallery">
+            <img class="detail-main-img" id="detailMainImg" src="" alt="">
+            <div class="detail-thumbnails" id="detailThumbnails"></div>
+        </div>
+        <div class="detail-info">
+            <div class="detail-breadcrumb">
+                <a href="#" onclick="closeDetail()">首页</a> / <a href="#" onclick="closeDetail()">基础T恤系列</a> / <span id="detailBreadcrumbName"></span>
+            </div>
+            <h1 class="detail-product-name" id="detailName"></h1>
+            <p class="detail-product-subtitle" id="detailSubtitle"></p>
+            <div class="detail-rating">
+                <span class="stars">★★★★★</span>
+                <span class="rating-text">4.9 / 5.0（128 条评价）</span>
+            </div>
+            <div class="detail-price" id="detailPrice"></div>
+
+            <div class="detail-section-label">颜色</div>
+            <div class="detail-color-options" id="detailColors"></div>
+
+            <div class="detail-section-label">尺码</div>
+            <div class="detail-size-options">
+                <button class="detail-size-btn" onclick="selectSize(this)">S</button>
+                <button class="detail-size-btn active" onclick="selectSize(this)">M</button>
+                <button class="detail-size-btn" onclick="selectSize(this)">L</button>
+                <button class="detail-size-btn" onclick="selectSize(this)">XL</button>
+                <button class="detail-size-btn" onclick="selectSize(this)">XXL</button>
+            </div>
+
+            <div class="detail-desc-title">商品详情</div>
+            <p class="detail-desc-text" id="detailDesc"></p>
+
+            <button class="detail-add-cart" id="detailAddCart">加入购物车</button>
+            <button class="detail-buy-now">立即购买</button>
+
+            <div class="detail-features">
+                <div class="detail-feature-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    品质保证，正品承诺
+                </div>
+                <div class="detail-feature-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                    全国包邮，极速发货
+                </div>
+                <div class="detail-feature-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                    7天无理由退换
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Promo Popup -->
+<div class="popup-mask" id="promoPopup">
+    <div class="popup-box">
+        <button class="popup-close" onclick="closePopup()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <div class="popup-top">
+            <div class="popup-brand">JESFIO STUDIO</div>
+            <div class="popup-offer">立减 5 <span class="popup-offer-unit">元</span></div>
+            <div class="popup-hint">为您准备的首次购物满减优惠</div>
+        </div>
+        <div class="popup-bottom">
+            <div class="popup-input-wrap">
+                <input class="popup-input" type="email" placeholder="在此输入您的邮箱">
+            </div>
+            <button class="popup-submit" onclick="claimCoupon()">获取 5 元优惠</button>
+            <button class="popup-dismiss" onclick="closePopup()">不，谢谢，我不需要优惠</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+const products = [
+    {
+        id: 'A',
+        name: '经典V领',
+        desc: '柔软棉料，宽松版型',
+        detail: '采用柔软亲肤棉料，触感细腻舒适，穿着轻盈不易产生束缚感。经典V领设计能够自然修饰颈部线条，提升整体利落感；宽松版型兼顾活动空间与穿着舒适度，适合日常通勤、周末休闲及多场景搭配。整体风格简洁耐看，是衣橱中容易反复穿着的基础款单品。',
+        price: 98,
+        variants: [
+            { img: '图片/产品A1.JPG', color: '#7C8D5F', name: '橄榄绿' },
+            { img: '图片/产品A2.JPG', color: '#A9AAA5', name: '浅灰色' },
+            { img: '图片/产品A3.JPG', color: '#111111', name: '黑色' }
+        ]
+    },
+    {
+        id: 'B',
+        name: '修身圆领',
+        desc: '优质匹马棉，修身剪裁',
+        detail: '选用质感细腻的舒适面料，穿着贴肤顺滑，兼具简约外观与日常实穿性。圆领设计经典百搭，修身剪裁更贴合身体线条，能够呈现清爽利落的穿搭效果；无论单穿还是作为内搭，都能展现干净简洁的风格。适合喜欢合身版型、注重日常精致感的消费者。',
+        price: 99,
+        variants: [
+            { img: '图片/产品B1.JPG', color: '#4E79C7', name: '蓝色' },
+            { img: '图片/产品B2.JPG', color: '#A9AAA5', name: '浅灰色' },
+            { img: '图片/产品B3.JPG', color: '#F5F5F3', name: '白色' }
+        ]
+    },
+    {
+        id: 'C',
+        name: '图案印花',
+        desc: '有机棉，艺术家联名',
+        detail: '采用舒适透气面料，穿着轻松自在，适合日常长时间使用。胸前艺术感印花设计为基础款注入视觉亮点，在简洁版型中增加个性表达与时尚感；整体不过分夸张，既保留了日常百搭属性，也更具辨识度。适合搭配牛仔裤、休闲裤或短裤，轻松打造有设计感的日常穿搭。',
+        price: 105,
+        variants: [
+            { img: '图片/产品C1.JPG', color: '#F3F3F1', name: '白色' },
+            { img: '图片/产品C2.JPG', color: '#B8B8B3', name: '中灰色' }
+        ]
+    },
+    {
+        id: 'D',
+        name: '莫代尔混纺',
+        desc: '丝般柔软，垂坠质感',
+        detail: '采用莫代尔混纺面料，整体手感柔滑细腻，贴身穿着更显轻盈舒适。面料具有自然垂坠感，能够提升整体造型的柔和度与质感表现；简洁版型配合低饱和度配色，更适合打造轻松自然、富有亲和力的日常风格。无论居家、外出或休闲场景，都能带来舒适自在的穿着体验。',
+        price: 102,
+        variants: [
+            { img: '图片/产品D1.JPG', color: '#C99697', name: '豆沙粉' },
+            { img: '图片/产品D2.JPG', color: '#E7DFC8', name: '米白色' },
+            { img: '图片/产品D3.JPG', color: '#C7D2B8', name: '浅鼠尾草绿' }
+        ]
+    },
+    {
+        id: 'E',
+        name: '重磅棉料',
+        desc: '挺括，耐穿，休闲',
+        detail: '选用重磅棉质面料，手感扎实挺括，穿着时更有轮廓感，也更耐穿耐洗。整体设计简洁大方，没有过多装饰，但凭借面料质感与版型支撑，能够呈现干净利落的休闲风格；适合作为基础款长期搭配使用。对于偏好厚实手感、注重耐用性与品质感的消费者来说，这是一款实穿性较强的日常单品。',
+        price: 98,
+        variants: [
+            { img: '图片/产品E1.JPG', color: '#151515', name: '黑色' },
+            { img: '图片/产品E2.JPG', color: '#F4F4F2', name: '白色' },
+            { img: '图片/产品E3.JPG', color: '#6E6E6B', name: '深灰色' }
+        ]
+    },
+    {
+        id: 'F',
+        name: '口袋设计',
+        desc: '简约美学，宽松舒适',
+        detail: '采用舒适棉料制作，整体风格简约自然，兼顾实用性与日常美感。胸前口袋细节在不影响基础款简洁感的同时，为衣身增加层次与设计识别度；宽松舒适的版型也让穿着体验更轻松自在。适合搭配牛仔裤、休闲长裤或运动风单品，呈现随性而不单调的日常穿搭效果。',
+        price: 100,
+        variants: [
+            { img: '图片/产品F1.JPG', color: '#D9D9D4', name: '浅灰色' },
+            { img: '图片/产品F2.JPG', color: '#253B74', name: '深蓝色' },
+            { img: '图片/产品F3.JPG', color: '#F4F4F2', name: '白色' }
+        ]
+    }
+];
+
+let cartCount = 0;
+let currentProduct = null;
+let currentVariantIndex = 0;
+
+function renderProducts() {
+    const grid = document.getElementById('productsGrid');
+    grid.innerHTML = '';
+
+    products.forEach((product) => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+
+        const imagesHTML = product.variants.map((v, i) =>
+            `<img src="${v.img}" alt="${product.name}" class="${i === 0 ? 'active' : 'hidden'}" data-index="${i}">`
+        ).join('');
+
+        const swatchesHTML = product.variants.map((v, i) =>
+            `<span class="swatch ${i === 0 ? 'active' : ''}" style="background:${v.color}" data-product="${product.id}" data-index="${i}"></span>`
+        ).join('');
+
+        card.innerHTML = `
+            <div class="product-image-wrap" id="imgWrap-${product.id}" data-product-id="${product.id}">
+                ${imagesHTML}
+            </div>
+            <div class="product-name">${product.name}</div>
+            <div class="product-desc">${product.desc}</div>
+            <div class="color-swatches">${swatchesHTML}</div>
+            <div class="price-rating-row">
+                <span class="product-price">¥${product.price}</span>
+                <span class="product-rating"><span class="star">★★★★★</span></span>
+            </div>
+            <div class="card-buttons">
+                <button class="btn-card-cart" data-name="${product.name}">加入购物车</button>
+                <button class="btn-card-buy" data-name="${product.name}">立即购买</button>
+            </div>
+        `;
+
+        grid.appendChild(card);
+    });
+
+    bindEvents();
+}
+
+function bindEvents() {
+    document.querySelectorAll('.swatch').forEach(swatch => {
+        swatch.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const productId = this.dataset.product;
+            const index = parseInt(this.dataset.index);
+
+            const wrap = document.getElementById(`imgWrap-${productId}`);
+            wrap.querySelectorAll('img').forEach(img => {
+                img.classList.remove('active');
+                img.classList.add('hidden');
+            });
+            const target = wrap.querySelector(`img[data-index="${index}"]`);
+            target.classList.remove('hidden');
+            target.classList.add('active');
+
+            this.closest('.color-swatches').querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    document.querySelectorAll('.btn-card-cart').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            cartCount++;
+            document.getElementById('cartBadge').textContent = cartCount;
+            showToast(`已将「${this.dataset.name}」加入购物车`);
+        });
+    });
+
+    document.querySelectorAll('.btn-card-buy').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const productId = this.closest('.product-card').querySelector('.product-image-wrap').dataset.productId;
+            const activeImg = this.closest('.product-card').querySelector('img.active');
+            const variantIdx = activeImg ? parseInt(activeImg.dataset.index) : 0;
+            openDetail(productId, variantIdx);
+        });
+    });
+
+    document.querySelectorAll('.product-card').forEach(card => {
+        card.addEventListener('click', function () {
+            const imgWrap = this.querySelector('.product-image-wrap');
+            const productId = imgWrap.dataset.productId;
+            const activeImg = imgWrap.querySelector('img.active');
+            const variantIdx = activeImg ? parseInt(activeImg.dataset.index) : 0;
+            openDetail(productId, variantIdx);
+        });
+    });
+}
+
+function openDetail(productId, variantIdx) {
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+
+    currentProduct = product;
+    currentVariantIndex = variantIdx || 0;
+
+    document.getElementById('detailName').textContent = product.name;
+    document.getElementById('detailSubtitle').textContent = product.desc;
+    document.getElementById('detailBreadcrumbName').textContent = product.name;
+    document.getElementById('detailPrice').textContent = `¥${product.price}`;
+    document.getElementById('detailDesc').textContent = product.detail;
+    document.getElementById('detailMainImg').src = product.variants[currentVariantIndex].img;
+
+    const thumbs = document.getElementById('detailThumbnails');
+    thumbs.innerHTML = product.variants.map((v, i) =>
+        `<img class="detail-thumb ${i === currentVariantIndex ? 'active' : ''}" src="${v.img}" alt="${v.name}" onclick="switchDetailVariant(${i})">`
+    ).join('');
+
+    const colors = document.getElementById('detailColors');
+    colors.innerHTML = product.variants.map((v, i) =>
+        `<div class="detail-color-item ${i === currentVariantIndex ? 'active' : ''}" onclick="switchDetailVariant(${i})">
+            <div class="detail-color-circle" style="background:${v.color}"></div>
+            <span class="detail-color-name">${v.name}</span>
+        </div>`
+    ).join('');
+
+    document.getElementById('detailAddCart').onclick = function () {
+        cartCount++;
+        document.getElementById('cartBadge').textContent = cartCount;
+        showToast(`已将「${product.name} · ${product.variants[currentVariantIndex].name}」加入购物车`);
+    };
+
+    const overlay = document.getElementById('detailOverlay');
+    overlay.classList.add('open');
+    overlay.scrollTop = 0;
+}
+
+function switchDetailVariant(idx) {
+    if (!currentProduct) return;
+    currentVariantIndex = idx;
+
+    document.getElementById('detailMainImg').src = currentProduct.variants[idx].img;
+
+    document.querySelectorAll('.detail-thumb').forEach((t, i) => {
+        t.classList.toggle('active', i === idx);
+    });
+    document.querySelectorAll('.detail-color-item').forEach((c, i) => {
+        c.classList.toggle('active', i === idx);
+    });
+}
+
+function closeDetail() {
+    document.getElementById('detailOverlay').classList.remove('open');
+}
+
+function selectSize(btn) {
+    document.querySelectorAll('.detail-size-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+}
+
+function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+renderProducts();
+
+// Promo popup after 10 seconds
+let promoTimer = setTimeout(() => {
+    document.getElementById('promoPopup').classList.add('show');
+}, 10000);
+
+function closePopup() {
+    document.getElementById('promoPopup').classList.remove('show');
+    clearTimeout(promoTimer);
+}
+
+function claimCoupon() {
+    const email = document.querySelector('.popup-input').value.trim();
+    if (!email) {
+        showToast('请输入您的邮箱地址');
+        return;
+    }
+    closePopup();
+    showToast('优惠券已发送至您的邮箱！');
+}
+
+document.getElementById('promoPopup').addEventListener('click', function (e) {
+    if (e.target === this) closePopup();
+});
+</script>
+
+</body>
+</html>
